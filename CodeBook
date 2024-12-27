@@ -1,0 +1,103 @@
+# Codebook for the Getting and Cleaning Data Course Project utilizing the Human Activity Recognition (HAR) Dataset
+
+1. Project Overview
+This project involves the cleaning and transformation of the Human Activity Recognition (HAR) dataset, originally from the UCI Machine Learning Repository. The goal is to create a tidy dataset that includes the average of each measurement (mean and standard deviation) for each activity and subject using the run_analysis.R script.
+
+
+## Initial Dataset:
+
+2. Dataset Overview
+The dataset contains sensor data recorded from smartphones during various physical activities. It includes measurements from a 3-axial accelerometer and gyroscope embedded in the smartphone. The activities include walking, walking upstairs, walking downstairs, sitting, standing, and laying down.
+ Find the data at this link: [UCI HAR Dataset.zip](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip)
+
+3. Data Files
+UCI HAR Dataset Directory: The main directory containing data files.
+train Subdirectory: Contains the training dataset.
+test Subdirectory: Contains the test dataset.
+features.txt: A list of the 561 features (measurements) that were captured during the experiments.
+activity_labels.txt: A list of activity labels that correspond to the integer values in the y_train.txt and y_test.txt files.
+
+#Load the Data
+
+The following files are loaded into R for processing:
+
+features.txt: Contains feature names for the 561 measurements.
+activity_labels.txt: Contains labels for activities.
+X_train.txt, y_train.txt, subject_train.txt: Contain the training data for measurements, activity labels, and subjects, respectively.
+X_test.txt, y_test.txt, subject_test.txt: Contain the test data for measurements, activity labels, and subjects, respectively.
+Step 3: Merge the Training and Test Datasets
+The training and test datasets are combined using rbind to create a single dataset:
+
+x_data: The merged measurements (561 features for each observation).
+y_data: The merged activity labels (activity performed during the observation).
+subject_data: The merged subject identifiers (who performed the activity).
+Step 4: Extract Mean and Standard Deviation Measurements
+Only the columns corresponding to the mean and standard deviation of the measurements are kept, using regular expressions to identify features that contain "mean()" or "std()".
+
+Step 5: Label Activities with Descriptive Names
+The activity labels in y_data are replaced with descriptive activity names using the activity_labels dataset (e.g., "1" becomes "Walking").
+
+Step 6: Label Variables with Descriptive Names
+The column names in x_data are modified to make them more descriptive (e.g., replacing t with time for time-domain features and f with frequency for frequency-domain features).
+
+Step 7: Create a Tidy Data Set
+The data is grouped by subject and activity, and the average of each variable is calculated for each combination of subject and activity.
+
+Step 8: Write the Tidy Data to a File
+The final tidy dataset is saved as tidy_data.txt, which contains the average of each measurement for each subject-activity pair.
+
+#Variables in the Tidy Dataset
+
+The tidy dataset contains the following columns:
+
+subject: The ID of the subject performing the activity. This is a numeric identifier for the individual.
+
+Values range from 1 to 30, corresponding to 30 subjects in total.
+activity: The activity label describing the action the subject is performing. This is a categorical variable with the following possible values:
+
+WALKING
+WALKING_UPSTAIRS
+WALKING_DOWNSTAIRS
+SITTING
+STANDING
+LAYING
+Feature Columns: These columns correspond to the mean and standard deviation of various measurements recorded from the accelerometer and gyroscope. The columns are named based on the original feature names from features.txt, modified with descriptive labels (e.g., timeBodyAccelerometerMeanX, frequencyBodyGyroscopeStdY).
+
+Example of feature names:
+
+timeBodyAccelerometerMeanX: The mean of the X-axis accelerometer measurement in the time domain.
+frequencyBodyGyroscopeStdZ: The standard deviation of the Z-axis gyroscope measurement in the frequency domain.
+The exact number of feature columns is dependent on the specific selection of "mean" and "std" measurements (a total of 66 columns are extracted after applying the filtering conditions).
+
+#Data Summary
+
+Original Dataset:
+
+Contains 561 features, representing measurements from the accelerometer and gyroscope sensors in both the time and frequency domains.
+The dataset is collected from 30 subjects, each performing six different activities.
+After Transformation:
+
+The resulting tidy dataset contains a reduced set of features that focus on the mean and standard deviation of the measurements.
+The data is grouped by subject and activity, and the average of each measurement is computed for each combination.
+Tidy Dataset Structure:
+
+Number of rows: 180 (30 subjects × 6 activities)
+Number of columns: 68 (1 for subject, 1 for activity, and 66 feature columns)
+
+#Codebook Notes
+
+Feature Selection:
+
+Only measurements related to the mean and standard deviation (mean() and std()) are included in the final dataset. This ensures that the dataset focuses on the most relevant features for analyzing human activity.
+Descriptive Variable Names:
+
+All variable names in the dataset are cleaned up to remove ambiguous abbreviations and to make them more descriptive. For example:
+"Acc" becomes "Accelerometer", "Gyro" becomes "Gyroscope".
+"t" and "f" are replaced with "time" and "frequency", respectively, to indicate the domain of the measurements.
+"BodyBody" is replaced with "Body" to correct duplicate words.
+Tidy Data Format:
+
+##The tidy dataset follows the principles of tidy data, with each observation (subject-activity combination) represented in a single row and each variable in its own column.
+8. References
+UCI Machine Learning Repository: Human Activity Recognition Using Smartphones Dataset
+"Getting and Cleaning Data" Course (Coursera): Course Link https://www.coursera.org/learn/data-cleaning/home/week/4
